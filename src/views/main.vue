@@ -89,6 +89,10 @@ export default {
                 link.href = canvas.toDataURL();
                 link.click();
             });
+        },
+        deleteImage(){
+            this.imageURL="";
+            this.imageName="";
         }
     },
     computed:{
@@ -198,7 +202,7 @@ input[type="file"] {
     padding: .8rem;
 }
 
-.custom-file-upload span{
+.custom-file-upload span:not(.delete){
     padding:.6rem;
     border: gray;
     background-color: lightgray;
@@ -208,11 +212,11 @@ input[type="file"] {
     transition: 0.2s ease-in-out;
 }
 
-.custom-file-upload span:hover{
+.custom-file-upload span:not(.delete):hover{
     background-color: gray
 }
 
-.material-symbols-rounded{
+.material-symbols-rounded:not(.delete){
     position: absolute;
     top: 50%;
     left: 50%;
@@ -220,6 +224,11 @@ input[type="file"] {
     transition: opacity 0.3s ease;
     font-size: 6rem;
     color:white;
+}
+
+.delete{
+    /* position: static; */
+    color: black;
 }
 
 .qr__container:hover {
