@@ -38,7 +38,7 @@
                 <div class="qr__container" @mouseover="showIcon = true" @mouseleave="showIcon = false" @click="downloadQR">
                     <qrcode-vue class="qr__code" :value="value" :size="size" level="H" render-as="svg"
                         :background="bgColor" :foreground="fgColor" margin="1" />
-                    <img v-if="imageURL" class="qr__image" :src="imageURL" alt="">
+                    <img v-if="imageURL" class="qr__image" :src="imageURL" alt="" :style="imgBackground"
                 </div>
                 <Transition name="fade">
                     <span v-if="showIcon" class="material-symbols-rounded">download</span>
@@ -90,6 +90,14 @@ export default {
                 link.click();
             });
         }
+    },
+    computed:{
+        imgBackground(){
+            return{
+                'background-color':this.bgColor,
+                'border-color':this.bgColor
+            }
+        }
     }
 }
 </script>
@@ -134,6 +142,7 @@ header h1{
     position: relative;
     cursor: pointer;
     transition: .3s ease-in-out;
+    display: flex;
 }
 
 
