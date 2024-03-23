@@ -22,7 +22,7 @@ import tinycolor from 'tinycolor2';
 export default {
     data() {
         return {
-            colors: ['8C001A', 'FF3B30', 'ED5603', 'DC136C', 'FFBF00', 'F4D06F', 'F2E94E', '392F5A', '610F7F', 'F2A6A6', 'B7AD99', '0CCE6B', '06A77D', '96E6B3', '82DDF0', '1098F7'],
+            colors: ['FFFFFF','000000','8C001A', 'FF3B30', 'ED5603', 'DC136C', 'FFBF00', 'F4D06F', 'F2E94E', '392F5A', '610F7F', 'F2A6A6', 'B7AD99', '0CCE6B', '96E6B3', '1098F7'],
             updatedColor: ''
         };
     },
@@ -36,15 +36,18 @@ export default {
         if (this.color.startsWith('#') && this.color.length > 1) {
             // Si empieza con '#' y tiene al menos dos caracteres, quitamos el primer caracter y devolvemos el resto del string
             this.updatedColor = this.color.slice(1);
+            this.updatedColor = this.updatedColor.toUpperCase();
         } else {
             // Si no cumple las condiciones anteriores, devolvemos el mismo string
-            this.updatedColor = this.color;
+            this.updatedColor = this.color.toUpperCase();
         }
+        this.updatedColor=this.updatedColor.toUpperCase();
         this.updatedColor = `#${this.updatedColor}`
     },
     methods: {
         selectColor(color) {
             this.updatedColor = '#' + color;
+            this.updatedColor=this.updatedColor.toUpperCase();
             this.$emit('update:color', this.updatedColor);
         },
     },
@@ -70,7 +73,7 @@ export default {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    margin: 5px;
+    /* margin: 5px; */
     background-color: white;
     box-shadow: 0 1px 4px rgba(0, 0, 0, .25);
 }
@@ -125,7 +128,7 @@ export default {
 
 .selected {
     border: 3px solid #98a1a4;
-    width:45px;
-    height:45px;
+    /* width:45px; */
+    /* height:45px; */
 }
 </style>

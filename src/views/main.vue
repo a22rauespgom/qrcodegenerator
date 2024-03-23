@@ -1,7 +1,8 @@
 <template>
     <div class="page">
         <header>
-            <h1>QR CODE GENERATOR</h1>
+            <h1>QRCode Generator</h1>
+            <hr>
         </header>
         <div class="qr-generator">
             <div class="form">
@@ -11,7 +12,10 @@
                 </div>
                 <div class="input-container">
                     <label for="qr-size">QR Size</label>
-                    <input type="range" id="qr-size" min="200" max="600" v-model="size">
+                    <input type="range" id="qr-size" min="200" max="600" v-model="size" list="tickmarks" step="100">
+                    <datalist id="tickmarks">
+                        <option v-for="index in 6" :value="index * 100"></option>
+                    </datalist>
                 </div>
                 <div class="input-container">
                     <label for="">Background Color</label>
@@ -22,19 +26,30 @@
                     <color :color="fgColor" @update:color="fgColor = $event" />
                 </div>
                 <div class="input-container">
-                    <label for="image-value">QR Icon</label>
-                    <input id="image-value" type="file" @change="handleFileChange">
+                    <label for="">QR Icon</label>
+                    <label for="file-upload" class="custom-file-upload">
+                        <span>Upload image</span>
+                        {{ imageName || `No file uploaded` }}
+                    </label>
+                    <input id="file-upload" type="file" @change="handleFileChange" />
                 </div>
             </div>
             <div class="qr">
-                <div class="qr__container">
+                <div class="qr__container" @mouseover="showIcon = true" @mouseleave="showIcon = false" @click="downloadQR">
                     <qrcode-vue class="qr__code" :value="value" :size="size" level="H" render-as="svg"
                         :background="bgColor" :foreground="fgColor" margin="1" />
                     <img v-if="imageURL" class="qr__image" :src="imageURL" alt="">
                 </div>
+                <Transition name="fade">
+                    <span v-if="showIcon" class="material-symbols-rounded">download</span>
+                </Transition>
             </div>
         </div>
-        <footer>Developed by <a href="https://github.com/a22rauespgom">Raúl Espinosa Gómez</a></footer>
+        <footer>
+            <span>
+                Developed by <a href="https://github.com/a22rauespgom">Raúl Espinosa Gómez</a>
+            </span>
+        </footer>
     </div>
 </template>
 
@@ -54,7 +69,9 @@ export default {
             size: 500,
             bgColor: '#ffffff',
             fgColor: '#000000',
-            imageURL: ''
+            imageURL: '',
+            imageName:'',
+            showIcon:false,
         }
     },
     methods: {
@@ -62,10 +79,11 @@ export default {
             const file = e.target.files[0];
             if (file) {
                 this.imageURL = URL.createObjectURL(file);
+                this.imageName=file.name;
             }
         },
-        donwloadQR() {
-            html2canvas(document.querySelector('.a')).then(canvas => {
+        downloadQR() {
+            html2canvas(document.querySelector('.qr__container')).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'qr.png';
                 link.href = canvas.toDataURL();
@@ -80,13 +98,24 @@ export default {
 .page {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Alinea los elementos al principio y al final */
+    justify-content: space-between;
     align-items: center;
     width: 100vw;
     height: 100vh;
     padding: 20px;
 }
 
+header,
+footer {
+    width: 100%;
+    text-align: center;
+}
+
+header h1{
+    color:white;
+    font-size: 2rem;
+    font-variant: small-caps
+}
 
 .qr-generator {
     display: grid;
@@ -98,15 +127,15 @@ export default {
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    position: relative;
 }
 
 .qr__container {
     position: relative;
+    cursor: pointer;
+    transition: .3s ease-in-out;
 }
 
-.qr__container:hover {
-    /* opacity: 50%; */
-}
 
 .qr__image {
     background-color: #fff;
@@ -138,10 +167,60 @@ export default {
 
 .input-container label {
     font-size: 1.1rem;
+    margin-bottom: 0.2rem;
 }
 
 .input-container input[type="text"] {
     border-radius: 5px;
-    width: 50%;
+    font-size: 1.2rem;
+    padding: .8rem;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #000000;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    display: inline-block;
+    padding: .8rem;
+}
+
+.custom-file-upload span{
+    padding:.6rem;
+    border: gray;
+    background-color: lightgray;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right:1rem;
+    transition: 0.2s ease-in-out;
+}
+
+.custom-file-upload span:hover{
+    background-color: gray
+}
+
+.material-symbols-rounded{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    font-size: 6rem;
+    color:white;
+}
+
+.qr__container:hover {
+    filter: brightness(30%);
+}
+
+.fade-enter-active,.fade-leave-active{
+    transition:0.3s ease-in-out
+}
+.fade-enter-from,.fade-leave-to{
+    opacity:0;
 }
 </style>
