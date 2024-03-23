@@ -80,11 +80,11 @@ export default {
 .page {
     display: flex;
     flex-direction: column;
+    justify-content: space-between; /* Alinea los elementos al principio y al final */
     align-items: center;
     width: 100vw;
     height: 100vh;
-    margin-top: 20px; /* Ajusta el margen superior para el header */
-    /* Ajusta el margen inferior para el footer */
+    padding: 20px;
 }
 
 
