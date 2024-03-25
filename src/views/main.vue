@@ -35,14 +35,14 @@
                 </div>
             </div>
             <div class="qr">
-                <div class="qr__container" @mouseover="showIcon = true" @mouseleave="showIcon = false" @click="downloadQR">
+                <div class="qr__container">
                     <qrcode-vue class="qr__code" :value="value" :size="size" level="H" render-as="svg"
                         :background="bgColor" :foreground="fgColor" margin="1" />
                     <img v-if="imageURL" class="qr__image" :src="imageURL" alt="" :style="imgBackground"
                 </div>
-                <Transition name="fade">
-                    <span v-if="showIcon" class="material-symbols-rounded">download</span>
-                </Transition>
+                <button class="dl-button" @click="downloadQR">Download QR
+                    <span class="material-symbols-rounded">download</span>
+                </button>
             </div>
         </div>
         <footer>
@@ -144,7 +144,6 @@ header h1{
 
 .qr__container {
     position: relative;
-    cursor: pointer;
     transition: .3s ease-in-out;
     display: flex;
 }
@@ -212,33 +211,34 @@ input[type="file"] {
     transition: 0.2s ease-in-out;
 }
 
-.custom-file-upload span:not(.delete):hover{
-    background-color: gray
-}
 
-.material-symbols-rounded:not(.delete){
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.3s ease;
-    font-size: 6rem;
-    color:white;
-}
 
 .delete{
     /* position: static; */
     color: black;
 }
 
-.qr__container:hover {
-    filter: brightness(30%);
+.dl-button{
+    margin:1rem 0;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: .8rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .3s ease-in-out;
 }
 
-.fade-enter-active,.fade-leave-active{
-    transition:0.3s ease-in-out
+
+.dl-button span{
+    margin-left:.5rem;
 }
-.fade-enter-from,.fade-leave-to{
-    opacity:0;
+
+.dl-button:hover{
+    background-color: gray;
+    color: white;
 }
+
 </style>
